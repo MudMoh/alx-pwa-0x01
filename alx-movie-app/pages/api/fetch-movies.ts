@@ -5,10 +5,16 @@ export default async function handler (request: NextApiRequest, response: NextAp
   if (request.method === "POST") {
     const { year, page, genre } = request.body;
     const date = new Date();
+    let url = `https://moviesdatabase.p.rapidapi.com/titles?year=${
+      year || date.getFullYear()
+    }&sort=year.decr&limit=12&page=${page}`;
+
+    if (genre) {
+      url += `&genre=${genre}`;
+    }
+
     const resp = await fetch(
-      `https://moviesdatabase.p.rapidapi.com/titles?year=${
-        year || date.getFullYear()
-      }&sort=year.decr&limit=12&page=${page}&${genre && `genre=${genre}`}`,
+      url,
       {
         headers: {
           "x-rapidapi-host": "moviesdatabase.p.rapidapi.com",
@@ -17,8 +23,11 @@ export default async function handler (request: NextApiRequest, response: NextAp
       }
     );
 
-    if (!resp.ok) throw new Error("Failed to fetch movies");
-
+    if (!resp.ok) {
+      return response.status(500).json({
+        message: "Failed to fetch movies"
+      })
+    }
     const moviesResponse = await resp.json();
     const movies: MoviesProps[] = moviesResponse.results;
 
