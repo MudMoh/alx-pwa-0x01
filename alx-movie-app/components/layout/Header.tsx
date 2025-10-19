@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Button from "../commons/Button"
-import buttonprops from "../commons/Button"
+import { ButtonProps } from "@/interfaces"
+
 
 const Header: React.FC = () => {
   return (
