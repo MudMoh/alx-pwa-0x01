@@ -1,6 +1,5 @@
 import Link from "next/link"
-import Button from "../commons/Button"
-import { ButtonProps } from "@/interfaces"
+import Button from "../ui/Button"
 
 
 const Header: React.FC = () => {
